@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catch Me If You Can!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #root {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function CatchMeGame() {
+            const [moveCount, setMoveCount] = React.useState(0);
+            const [buttonPosition, setButtonPosition] = React.useState('50%');
+            const [showVideo, setShowVideo] = React.useState(false);
+
+            const handleMouseEnter = (e) => {
+                if (moveCount < 5) {
+                    let newLeft;
+                    switch (moveCount) {
+                        case 0:
+                        case 2:
+                            newLeft = '90%'; // Move to the right (10% from the right edge)
+                            break;
+                        case 1:
+                        case 3:
+                            newLeft = '10%'; // Move to the left (10% from the left edge)
+                            break;
+                        default:
+                            newLeft = '50%'; // Center position
+                    }
+                    setButtonPosition(newLeft);
+                    setMoveCount(prev => prev + 1);
+                }
+            };
+
+            const handleButtonClick = () => {
+                if (moveCount >= 5) {
+                    setShowVideo(true);
+                    const videoElement = document.querySelector('video');
+                    if (videoElement) {
+                        videoElement.play();
+                    }
+                }
+            };
+
+            const containerStyle = {
+                width: '100vw',
+                height: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                position: 'relative',
+                overflow: 'hidden',
+            };
+
+            const roundedDivStyle = {
+                width: '150px',
+                height: '150px',
+                borderRadius: '75px',
+                position: 'absolute',
+                top: showVideo ? '90%' : '70%',
+                left: buttonPosition,
+                transform: 'translate(-50%, -50%)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                transition: 'left 0.3s ease',
+            };
+
+            const buttonStyle = {
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)', 
+                padding: '10px 60px',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+            };
+
+            const videoStyle = {
+                display: showVideo ? 'block' : 'none',
+                maxWidth: '100%',
+                marginTop: '20px',
+            };
+
+            return (
+                <div style={containerStyle}>
+                    <h2>Catch Me If You Can!</h2>
+                    {moveCount < 5 ? (
+                        <p>Click the button for more surprise!</p>
+                    ) : (
+                        <p>Now you can click to reveal the surprise!</p>
+                    )}
+                    
+                    <div 
+                        style={roundedDivStyle} 
+                        onMouseEnter={handleMouseEnter}
+                    >
+                        <button 
+                            style={buttonStyle} 
+                            onClick={handleButtonClick}
+                        >
+                            Click Me
+                        </button>
+                    </div>
+
+                    <video 
+                        style={videoStyle} 
+                        width="400" 
+                        controls 
+                        autoPlay
+                    >
+                        <source src="Special-video.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<CatchMeGame />, document.getElementById('root'));
+    </script>
+</body>
+</html>

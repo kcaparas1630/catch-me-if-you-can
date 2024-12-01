@@ -1,0 +1,15 @@
+{
+  "name": "catch-me-if-you-can",
+  "version": "1.0.0",
+  "description": "CATCH THE BUTTON IF YOU CAN! HEHEHEHE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^6.0.1"
+  }
+}
